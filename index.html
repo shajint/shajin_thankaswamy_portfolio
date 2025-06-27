@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name - Portfolio</title>
+  <!-- Tailwind CSS for styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .carousel {
+      display: block;
+      overflow: hidden;
+      width: 100%;
+      min-height: 600px;
+      position: relative;
+    }
+    .carousel-inner {
+      display: flex;
+      width: 100%;
+      min-height: 600px;
+      transition: transform 0.5s ease-in-out;
+    }
+    .carousel-item {
+      min-width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .carousel-item img {
+      height: auto;
+      max-height: 600px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    #carouselDots span {
+      transition: background-color 0.3s;
+    }
+    [data-section="awards"] {
+      position: relative;
+    }
+    [data-section="awards"].hidden-section .carousel-inner {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out;
+    }
+    [data-section="awards"].visible-section .carousel-inner {
+      opacity: 1;
+      visibility: visible;
+    }
+    .certifications-carousel {
+      display: block;
+      overflow: hidden;
+      width: 100%;
+      min-height: 400px;
+      position: relative;
+    }
+    .certifications-inner {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      width: 500%; /* 5 spaces for 5 certificates */
+    }
+    .certification-item {
+      min-width: 20%; /* 100% / 5 */
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+    .certification-item img {
+      height: auto;
+      max-height: 400px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .next-button {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .next-button:hover {
+      background-color: #2563eb;
+    }
+    .prev-button {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .prev-button:hover {
+      background-color: #2563eb;
+    }
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+    }
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      max-height: 90%;
+    }
+    .modal-content img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 24px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+  <!-- Navbar -->
+  <nav class="bg-blue-800 text-white p-4 sticky top-0 shadow-lg z-50" style="height: 64px;">
+    <div class="container mx-auto flex justify-between items-center h-full">
+      <h1 class="text-2xl font-bold">Your Name</h1>
+      <ul class="flex space-x-6">
+        <li><a href="#home" class="hover:underline">Home</a></li>
+        <li><a href="#about" class="hover:underline">About</a></li>
+        <li><a href="#projects" class="hover:underline">Projects</a></li>
+        <li><a href="#experience" class="hover:underline">Experience</a></li>
+        <li><a href="#certifications" class="hover:underline">Certifications</a></li>
+        <li><a href="#awards" class="hover:underline">Awards</a></li>
+        <li><a href="#contact" class="hover:underline">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+  <!-- Home Section -->
+  <section id="home" class="bg-blue-100 py-20 text-center">
+    <div class="container mx-auto">
+      <h2 class="text-4xl font-bold mb-4 text-blue-900">Welcome to My Portfolio</h2>
+      <p class="text-lg mb-6">Hi, I’m [Your Name]! This is my portfolio showcasing my achievements, awards, and Python simulation projects.</p>
+      <img src="Shajin Thankaswamy.jpg" alt="Your Name" class="w-48 h-48 rounded-full mx-auto mb-6 object-cover shadow-md">
+      <a href="#projects" class="bg-blue-800 text-white px-6 py-2 rounded hover:bg-blue-900">View Projects</a>
+    </div>
+  </section>
+  <!-- About Section -->
+  <section id="about" class="py-16">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8 text-gray-800">About Me</h2>
+      <p class="text-lg max-w-2xl mx-auto">
+        I’m a passionate Python developer with a knack for creating simulations and solving problems. I love exploring new tech and turning ideas into working projects.
+      </p>
+    </div>
+  </section>
+  <!-- Projects Section -->
+  <section id="projects" class="py-16">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Python Simulation Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <img src="https://via.placeholder.com/300x200" alt="Project 1" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Physics Simulation</h3>
+          <p>A Python-based simulation of planetary motion using Pygame.</p>
+          <a href="https://github.com/yourusername/project1" class="text-blue-800 hover:underline">View Code</a>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <img src="https://via.placeholder.com/300x200" alt="Project 2" class="w-full h-48 object-cover rounded-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Data Visualization</h3>
+          <p>A simulation visualizing data trends using Matplotlib.</p>
+          <a href="https://github.com/yourusername/project2" class="text-blue-800 hover:underline">View Code</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Professional Experience Section -->
+  <section id="experience" class="bg-gray-100 py-16">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Professional Experience</h2>
+      <div id="experienceDetails">
+        <div class="bg-white p-6 rounded-lg shadow-md mb-4">
+          <h3 class="text-xl font-semibold mb-2">Junior Associate - Guidehouse</h3>
+          <p class="text-gray-600">Feb 2023 - Sep 2024</p>
+          <p>Developed simulation tools and optimized data processing workflows using Python and Pygame.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+  <h3 class="text-xl font-semibold mb-2">Founder - Vision Focus tuition</h3>
+  <p class="text-gray-600">Jun 2017 - May 2022</p>
+  <p>Assisted in creating data visualizations and reports using Matplotlib and Jupyter Notebook.</p>
+  <div class="mt-4 flex flex-wrap gap-4">
+    <a href="Tuition_day_1.jpg" onclick="openModal('Tuition_day_1.jpg'); return false;">
+      <img src="Tuition_day_1.jpg" alt="Tuition_day_1" class="w-24 h-24 object-cover rounded-md cursor-pointer">
+    </a>
+    <a href="Tuition_day_2.jpg" onclick="openModal('Tuition_day_2.jpg'); return false;">
+      <img src="Tuition_day_2.jpg" alt="Tuition_day_2" class="w-24 h-24 object-cover rounded-md cursor-pointer">
+    </a>
+    <a href="Tuition_day_3.jpg" onclick="openModal('Tuition_day_3.jpg'); return false;">
+      <img src="Tuition_day_3.jpg" alt="Tuition_day_3" class="w-24 h-24 object-cover rounded-md cursor-pointer">
+    </a>
+    <a href="Tuition_day_4.jpg" onclick="openModal('Tuition_day_4.jpg'); return false;">
+      <img src="Tuition_day_4.jpg" alt="Tuition_day_4" class="w-24 h-24 object-cover rounded-md cursor-pointer">
+    </a>
+  </div>
+</div>
+    </div>
+  </section>
+  <!-- International Conference and Publication Section -->
+  <section id="international-conference" class="bg-gray-100 py-16">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">International Conference and Publication</h2>
+      <div id="conferenceDetails">
+        <div class="bg-white p-6 rounded-lg shadow-md mb-4 flex justify-between items-start">
+          <div>
+            <h3 class="text-xl font-semibold mb-2">International Conference on Python Simulations</h3>
+            <p class="text-gray-600">Mar 2024</p>
+            <p>Presented a groundbreaking paper on advanced Python simulations, attended by global experts.</p>
+          </div>
+          <div class="ml-4">
+            <a href="Thumbnail_All_India_Conference_Presentation.jpg" target="_blank">
+              <img src="Thumbnail_All_India_Conference_Presentation.jpg" alt="Conference 1 Thumbnail" class="w-24 h-24 object-cover rounded-md cursor-pointer">
+            </a>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md mb-4 flex justify-between items-start">
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Published Paper on Data Visualization</h3>
+            <p class="text-gray-600">Jun 2023</p>
+            <p>Published a research paper on innovative data visualization techniques in a leading journal.</p>
+          </div>
+          <div class="ml-4">
+            <a href="Thhumbnail_Master_thesis_Conference.jpg" target="_blank">
+              <img src="Thhumbnail_Master_thesis_Conference.jpg" alt="Conference 2 Thumbnail" class="w-24 h-24 object-cover rounded-md cursor-pointer">
+            </a>
+          </div>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md mb-4 flex justify-between items-start">
+          <div>
+            <h3 class="text-xl font-semibold mb-2">Global AI Summit Presentation</h3>
+            <p class="text-gray-600">Sep 2024</p>
+            <p>Delivered a talk on AI-driven simulations at the Global AI Summit.</p>
+          </div>
+          <div class="ml-4">
+            <a href="International_Webinar_UK.jpg" target="_blank">
+              <img src="International_Webinar_UK.jpg" alt="Conference 3 Thumbnail" class="w-24 h-24 object-cover rounded-md cursor-pointer">
+            </a>
+          </div>
+    </div>
+  </section>
+  <!-- Certifications Section -->
+  <section id="certifications" class="py-16 relative" data-section="certifications">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Certifications</h2>
+      <div class="certifications-carousel relative overflow-hidden" style="min-height: 400px;">
+        <div class="certifications-inner flex" style="min-height: 400px; width: 500%;"> <!-- 5 spaces for 5 certificates -->
+          <div class="certification-item">
+            <img src="Advanced_Chemistry.jpg" alt="Certification 1" class="max-w-full max-h-[400px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="certification-item">
+            <img src="IBM_Certificate.jpg" alt="Certification 2" class="max-w-full max-h-[400px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="certification-item">
+            <img src="Learners_Achievement_GLP.jpg" alt="Certification 3" class="max-w-full max-h-[400px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="certification-item">
+            <img src="MatLab_Certificate.jpg" alt="Certification 4" class="max-w-full max-h-[400px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="certification-item">
+            <img src="Advanced diploma in python programming.jpg" alt="Certification 5" class="max-w-full max-h-[400px] object-contain rounded-lg shadow-md">
+          </div>
+        </div>
+        <button class="next-button" onclick="nextCertification()">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+        <button class="prev-button" onclick="prevCertification()">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Awards Section -->
+  <section id="awards" class="py-16 relative" data-section="awards">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">Awards</h2>
+      <div class="carousel relative overflow-hidden" style="min-height: 600px;">
+        <div class="carousel-inner flex" style="min-height: 600px;">
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Youth_Red_Cross.jpg" alt="Award 1" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Talent_Show.jpg" alt="Award 2" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Consumer_rights.jpg" alt="Award 3" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Blood_Donation.jpg" alt="Award 4" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Best_Orator_Award.jpg" alt="Award 5" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="ETA_Award.jpg" alt="Award 6" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Tamil_Valarchi_Thurai.jpg" alt="Award 7" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Nuclear_Technologies.jpg" alt="Award 8" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+          <div class="carousel-item flex items-center justify-center">
+            <img src="Best_Quizer_Award.jpg" alt="Award 9" class="max-w-full max-h-[600px] object-contain rounded-lg shadow-md">
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center mt-4" id="carouselDots"></div>
+    </div>
+  </section>
+  <!-- Contact Section -->
+  <section id="contact" class="bg-blue-800 text-white py-16">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-8">Get in Touch</h2>
+      <p class="text-lg mb-6">Reach out to me for collaborations or inquiries!</p>
+      <div class="flex justify-center space-x-6">
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=shajin9791@gmail.com" class="hover:text-gray-300" target="_blank">
+  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+  </svg>
+  <span class="sr-only">gmail</span>
+</a>
+        <a href="https://github.com/yourusername" class="hover:text-gray-300">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.84 9.487.5.09.682-.218.682-.484 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.03 1.532 1.03.892 1.529 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.983 1.03-2.682-.103-.253-.447-1.27.097-2.647 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0112 7.07c.85.004 1.705.114 2.504.337 1.909-1.295 2.747-1.026 2.747-1.026.545 1.377.2 2.394.097 2.647.64.699 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.36.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.578.688.482C19.138 20.166 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+          </svg>
+          <span class="sr-only">GitHub</span>
+        </a>
+        <a href="https://www.linkedin.com/in/shajin-thankaswamy-a18628208/" class="hover:text-gray-300">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-1.337-.255-2.666-1.875-2.666-1.959 0-2.125 1.509-2.125 2.672v5.598h-3v-11h2.875v1.369c.375-.611 1.015-1.475 2.475-1.475 1.804 0 3.175 1.167 3.175 3.674v5.432z"/>
+          </svg>
+          <span class="sr-only">LinkedIn</span>
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-4 text-center">
+    <p>© 2025 Your Name. All rights reserved.</p>
+  </footer>
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+      <img id="modalImage" src="" alt="Modal Image">
+    </div>
+  </div>
+  <!-- JavaScript for Carousel, Experience Toggle, and Modal -->
+  <script>
+    // Carousel Smooth Slide with Dots, Scroll Hide, and Infinite Loop for Awards
+    let currentSlide = 0;
+    const carouselInner = document.querySelector('.carousel-inner');
+    const slides = document.querySelectorAll('.carousel-item');
+    const dotsContainer = document.getElementById('carouselDots');
+    const awardsSection = document.querySelector('[data-section="awards"]');
+
+    function createDots() {
+      slides.forEach((_, index) => {
+        const dot = document.createElement('span');
+        dot.classList.add('w-3', 'h-3', 'rounded-full', 'bg-gray-400', 'mx-1', 'cursor-pointer');
+        dot.dataset.index = index;
+        if (index === 0) dot.classList.add('bg-blue-600');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    function updateDots() {
+      const dots = dotsContainer.querySelectorAll('span');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('bg-blue-600', index === (currentSlide % slides.length));
+        dot.classList.toggle('bg-gray-400', index !== (currentSlide % slides.length));
+      });
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      carouselInner.style.transition = 'transform 0.5s ease-in-out';
+      carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+      updateDots();
+    }
+
+    function autoSlide() {
+      currentSlide = (currentSlide + 1);
+      carouselInner.style.transition = 'transform 0.5s ease-in-out';
+      carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+      updateDots();
+
+      carouselInner.addEventListener('transitionend', () => {
+        if (currentSlide >= slides.length) {
+          carouselInner.style.transition = 'none';
+          currentSlide = 0;
+          carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
+          setTimeout(() => {
+            carouselInner.style.transition = 'transform 0.5s ease-in-out';
+          }, 0);
+        }
+      }, { once: true });
+    }
+
+    function handleScroll() {
+      const sectionTop = awardsSection.getBoundingClientRect().top;
+      const sectionBottom = awardsSection.getBoundingClientRect().bottom;
+      const windowHeight = window.innerHeight;
+
+      if (sectionTop < windowHeight && sectionBottom > 0) {
+        awardsSection.classList.add('visible-section');
+        awardsSection.classList.remove('hidden-section');
+      } else {
+        awardsSection.classList.add('hidden-section');
+        awardsSection.classList.remove('visible-section');
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    carouselInner.style.position = 'relative';
+    createDots();
+    setInterval(autoSlide, 3000);
+    handleScroll();
+
+    // Certifications Carousel
+    let currentCert = 0;
+    const certInner = document.querySelector('.certifications-inner');
+    const certItems = document.querySelectorAll('.certification-item');
+
+    function updateCertification() {
+      certInner.style.transform = `translateX(-${currentCert * 20}%)`; // 100% / 5
+    }
+
+    function nextCertification() {
+      if (currentCert < certItems.length - 1) {
+        currentCert++;
+        updateCertification();
+      }
+    }
+    function prevCertification() {
+      if (currentCert > 0) {
+        currentCert--;
+        updateCertification();
+      }
+    }
+    // Removed auto-slide
+    window.addEventListener('load', () => {
+      updateCertification(); // Initial position
+    });
+
+    // Experience Toggle (No change needed, but kept for reference)
+    const toggleButton = document.getElementById('experienceToggle');
+    const experienceDetails = document.getElementById('experienceDetails');
+    toggleButton.addEventListener('click', () => {
+      experienceDetails.classList.toggle('hidden');
+      toggleButton.textContent = experienceDetails.classList.contains('hidden') ? 'Show Experience' : 'Hide Experience';
+    });
+
+    // Modal Functions
+    function openModal(imageSrc) {
+      const modal = document.getElementById('modal');
+      const modalImage = document.getElementById('modalImage');
+      modalImage.src = imageSrc;
+      modal.style.display = 'block';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (event) => {
+      const modal = document.getElementById('modal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Smooth Scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>
